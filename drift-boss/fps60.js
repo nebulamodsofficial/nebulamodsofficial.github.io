@@ -1,19 +1,19 @@
 (() => {
     "use strict";
+
     const TARGET_FPS = 60;
     const FRAME_TIME = 1000 / TARGET_FPS;
-    let lastFrame = 0;
-    let pending = null;
+
     const originalRAF = window.requestAnimationFrame;
+    let lastFrameTime = -Infinity;
+
     window.requestAnimationFrame = function (callback) {
-        return originalRAF.call(window, function (time) {
-            if (time - lastFrame >= FRAME_TIME) {
-                lastFrame = time;
-                callback(time);
+        return originalRAF.call(window, function (timestamp) {
+            if (timestamp - lastFrameTime >= FRAME_TIME) {
+                lastFrameTime = timestamp;
+                callback(timestamp);
             } else {
-                pending = originalRAF.call(window, () => {
-                    window.requestAnimationFrame(callback);
-                });
+                window.requestAnimationFrame(callback);
             }
         });
     };
