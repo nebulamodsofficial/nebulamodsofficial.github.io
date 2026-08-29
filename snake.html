@@ -870,6 +870,16 @@ window.addEventListener(
     {passive:true}
 );
 
+if (params.has('wins')) {
+    const newWins = Number(params.get('wins'));
+
+    if (Number.isFinite(newWins) && newWins >= 0) {
+        wins = Math.floor(newWins);
+        winsLabelEl.innerText = wins;
+        saveProgress();
+    }
+}
+
 loadProgress();
 </script>
 </body>
